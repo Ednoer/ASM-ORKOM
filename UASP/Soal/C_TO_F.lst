@@ -1,0 +1,45 @@
+     1                                 %line 1+1 C_TO_F.asm
+     2                                 [extern scanf]
+     3                                 [extern printf]
+     4                                 [extern fflush]
+     5                                 
+     6                                 [section .data]
+     7 00000000 256600                  fmt1 db "%f", 0
+     8 00000003 252E32660A00            fmt2 db "%.2f", 10, 0
+     9 00000009 6666E63F                nilai dd 1.8
+    10 0000000D 00000042                nilai1 dd 32.0
+    11                                 
+    12                                 [section .bss]
+    13 00000000 <gap>                   a resd 1
+    14 00000004 <gap>                   result resd 1
+    15                                 
+    16                                 
+    17                                 [section .text]
+    18                                 [global main]
+    19                                 
+    20                                 main:
+    21 00000000 68[00000000]            push a
+    22 00000005 68[00000000]            push fmt1
+    23 0000000A E8(F6FFFFFF)            call scanf
+    24                                 
+    25 0000000F B8[00000000]            mov eax, nilai
+    26                                 
+    27 00000014 D905[00000000]          fld dword[a]
+    28 0000001A D80D[00000000]          fmul dword[nilai]
+    29 00000020 D805[00000000]          fadd dword[nilai1]
+    30                                 
+    31 00000026 DD1D[00000000]          fstp qword[result]
+    32                                 
+    33 0000002C FF35[04000000]          push dword[result+4]
+    34 00000032 FF35[00000000]          push dword[result]
+    35 00000038 68[00000000]            push fmt2
+    36 0000003D E8(F6FFFFFF)            call printf
+    37                                 
+    38                                 
+    39                                 exit:
+    40 00000042 6A00                    push 0
+    41 00000044 E8(F6FFFFFF)            call fflush
+    42                                 
+    43 00000049 B801000000              mov eax, 1
+    44 0000004E BB00000000              mov ebx, 0
+    45 00000053 CD80                    int 0x80

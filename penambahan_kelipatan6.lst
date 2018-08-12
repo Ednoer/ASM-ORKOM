@@ -1,0 +1,46 @@
+     1                                 %line 1+1 penambahan_kelipatan6.asm
+     2                                 [extern printf]
+     3                                 [extern scanf]
+     4                                 [extern fflush]
+     5                                 [section .data]
+     6 00000000 256400                  fmt1 db "%d", 0
+     7 00000003 25640A00                fmt2 db "%d", 10, 0
+     8                                 
+     9                                 [section .bss]
+    10 00000000 <gap>                   bil resd 1
+    11                                 
+    12                                 [section .text]
+    13                                 [global main]
+    14                                 
+    15                                 main :
+    16 00000000 68[00000000]            push bil
+    17 00000005 68[00000000]            push fmt1
+    18 0000000A E8(F6FFFFFF)            call scanf
+    19 0000000F 83C408                  add esp, 8
+    20                                 
+    21 00000012 BA00000000              mov edx, 0
+    22 00000017 A1[00000000]            mov eax, [bil]
+    23 0000001C BB06000000              mov ebx, 6
+    24 00000021 F7F3                    div ebx
+    25 00000023 F7E3                    mul ebx
+    26                                 
+    27 00000025 89C3                    mov ebx, eax
+    28                                 ulang:
+    29 00000027 83EB06                  sub ebx, 6
+    30 0000002A 01D8                    add eax, ebx
+    31 0000002C 39D3                    cmp ebx, edx
+    32 0000002E E0F5                    LOOPNE ulang
+    33                                 
+    34                                 
+    35 00000030 50                      push eax
+    36 00000031 68[00000000]            push fmt2
+    37 00000036 E8(F6FFFFFF)            call printf
+    38 0000003B 83C408                  add esp,8
+    39                                 
+    40                                 
+    41 0000003E 6A00                    push 0
+    42 00000040 E8(F6FFFFFF)            call fflush
+    43                                 exit:
+    44 00000045 B801000000              mov eax, 1
+    45 0000004A BB00000000              mov ebx, 0
+    46 0000004F CD80                    int 0x80

@@ -1,0 +1,65 @@
+     1                                 %line 1+1 5.asm
+     2                                 [extern scanf]
+     3                                 [extern printf]
+     4                                 [extern fflush]
+     5                                 
+     6                                 [section .data]
+     7 00000000 256400                  fmt1 db "%d", 0
+     8 00000003 25730A00                fmt2 db "%s", 10, 0
+     9 00000007 74696C616E6700          satu db "tilang", 0
+    10 0000000E 736564616E6700          dua db "sedang", 0
+    11 00000015 6C616D62617400          tiga db "lambat", 0
+    12                                 
+    13                                 [section .bss]
+    14 00000000 <gap>                   a resd 1
+    15                                 
+    16                                 [section .text]
+    17                                 [global main]
+    18                                 
+    19                                 main:
+    20 00000000 68[00000000]            push a
+    21 00000005 68[00000000]            push fmt1
+    22 0000000A E8(F6FFFFFF)            call scanf
+    23 0000000F 83C408                  add esp, 8
+    24                                 
+    25 00000012 A1[00000000]            mov eax, [a]
+    26 00000017 83F83C                  cmp eax, 60
+    27 0000001A 771C                    ja tilang
+    28                                 
+    29 0000001C 83F81E                  cmp eax, 30
+    30 0000001F 772B                    ja sedang
+    31                                 
+    32 00000021 83F801                  cmp eax, 1
+    33 00000024 77FE                    ja lambat
+    34                                 
+    35                                 lambat:
+    36 00000026 68[00000000]            push tiga
+    37 0000002B 68[00000000]            push fmt2
+    38 00000030 E8(F6FFFFFF)            call printf
+    39 00000035 83C408                  add esp, 8
+    40                                 
+    41 00000038 EB26                    jmp exit
+    42                                 
+    43                                 tilang:
+    44 0000003A 68[00000000]            push satu
+    45 0000003F 68[00000000]            push fmt2
+    46 00000044 E8(F6FFFFFF)            call printf
+    47 00000049 83C408                  add esp, 8
+    48                                 
+    49 0000004C EB12                    jmp exit
+    50                                 
+    51                                 sedang:
+    52 0000004E 68[00000000]            push dua
+    53 00000053 68[00000000]            push fmt2
+    54 00000058 E8(F6FFFFFF)            call printf
+    55 0000005D 83C408                  add esp, 8
+    56                                 
+    57 00000060 EBFE                    jmp exit
+    58                                 
+    59                                 exit:
+    60 00000062 6A00                    push 0
+    61 00000064 E8(F6FFFFFF)            call fflush
+    62                                 
+    63 00000069 B801000000              mov eax, 1
+    64 0000006E BB00000000              mov ebx, 0
+    65 00000073 CD80                    int 0x80

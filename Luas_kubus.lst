@@ -1,0 +1,38 @@
+     1                                 %line 1+1 Luas_kubus.asm
+     2                                 [extern printf]
+     3                                 [extern scanf]
+     4                                 [extern fflush]
+     5                                 [section .data]
+     6 00000000 256400                  fmt1 db "%d", 0
+     7 00000003 25640A00                fmt2 db "%d", 10, 0
+     8                                 
+     9                                 [section .bss]
+    10 00000000 <gap>                   rusuk resd 1
+    11                                 
+    12                                 [section .text]
+    13                                 [global main]
+    14                                 
+    15                                 main :
+    16 00000000 68[00000000]            push rusuk
+    17 00000005 68[00000000]            push fmt1
+    18 0000000A E8(F6FFFFFF)            call scanf
+    19 0000000F 83C408                  add esp, 8
+    20                                 
+    21 00000012 A1[00000000]            mov eax, [rusuk]
+    22 00000017 F7E0                    mul eax
+    23 00000019 BB06000000              mov ebx, 6
+    24 0000001E F7E3                    mul ebx
+    25                                 
+    26                                 
+    27 00000020 50                      push eax
+    28 00000021 68[00000000]            push fmt2
+    29 00000026 E8(F6FFFFFF)            call printf
+    30 0000002B 83C408                  add esp,8
+    31                                 
+    32                                 
+    33 0000002E 6A00                    push 0
+    34 00000030 E8(F6FFFFFF)            call fflush
+    35                                 exit:
+    36 00000035 B801000000              mov eax, 1
+    37 0000003A BB00000000              mov ebx, 0
+    38 0000003F CD80                    int 0x80

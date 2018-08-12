@@ -1,0 +1,55 @@
+     1                                 %line 1+1 cari_huruf.asm
+     2                                 [extern printf]
+     3                                 [extern fflush]
+     4                                 [extern scanf]
+     5                                 
+     6                                 [section .data]
+     7 00000000 257320257300            scan db "%s %s", 0
+     8 00000006 25640A00                print db "%d", 10,0
+     9 0000000A 746964616B20616461-     no db "tidak ada", 10,0
+    10 0000000A 0A00               
+    11                                 
+    12                                 [section .bss]
+    13 00000000 <gap>                   input resd 40
+    14 000000A0 <gap>                   banding resd 1
+    15                                 
+    16                                 [section .text]
+    17                                 [global main]
+    18                                 
+    19                                 main:
+    20 00000000 68[00000000]            push banding
+    21 00000005 68[00000000]            push input
+    22 0000000A 68[00000000]            push scan
+    23 0000000F E8(F6FFFFFF)            call scanf
+    24 00000014 83C408                  add esp, 8
+    25                                 
+    26 00000017 BF[00000000]            mov edi, input
+    27 0000001C A0[00000000]            mov al, [banding]
+    28                                 
+    29 00000021 B928000000              mov ecx, 40
+    30 00000026 F2AE                    repne scasb
+    31                                 
+    32 00000028 83F900                  cmp ecx, 0
+    33 0000002B 750D                    jne cetak
+    34                                 
+    35 0000002D 68[00000000]            push no
+    36 00000032 E8(F6FFFFFF)            call printf
+    37 00000037 83C408                  add esp, 8
+    38 0000003A EB15                    jmp exit
+    39                                 
+    40                                 cetak:
+    41 0000003C B828000000              mov eax, 40
+    42 00000041 29C8                    sub eax, ecx
+    43 00000043 50                      push eax
+    44 00000044 68[00000000]            push print
+    45 00000049 E8(F6FFFFFF)            call printf
+    46 0000004E 83C408                  add esp, 8
+    47 00000051 EBFE                    jmp exit
+    48                                 
+    49                                 exit:
+    50 00000053 6A00                    push 0
+    51 00000055 E8(F6FFFFFF)            call fflush
+    52                                 
+    53 0000005A B801000000              mov eax,1
+    54 0000005F BB00000000              mov ebx,0
+    55 00000064 CD80                    int 0x80

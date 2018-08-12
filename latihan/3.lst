@@ -1,0 +1,27 @@
+     1                                 %line 1+1 3.asm
+     2                                 [extern printf]
+     3                                 [extern fflush]
+     4                                 [section .data]
+     5 00000000 25730A00                ftm0 db "%s", 10, 0
+     6 00000004 48656C6C6F20776F72-     ftm1 db "Hello world!", 0
+     7 00000004 6C642100           
+     8                                 
+     9                                 [section .bss]
+    10                                 
+    11                                 [section .text]
+    12                                 [global main]
+    13                                 
+    14                                 main:
+    15 00000000 68[00000000]            push ftm0
+    16 00000005 68[00000000]            push ftm1
+    17 0000000A E8(F6FFFFFF)            call printf
+    18 0000000F 83C408                  add esp, 8
+    19                                 
+    20 00000012 6A00                    push 0
+    21 00000014 E8(F6FFFFFF)            call fflush
+    22                                 
+    23                                 exit:
+    24 00000019 B801000000              mov eax, 1
+    25 0000001E BB00000000              mov ebx, 0
+    26 00000023 CD80                    int 0x80
+    27                                 

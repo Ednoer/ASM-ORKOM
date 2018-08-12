@@ -1,0 +1,66 @@
+     1                                 %line 1+1 cek_kecepatan.asm
+     2                                 [extern scanf]
+     3                                 [extern printf]
+     4                                 [extern fflush]
+     5                                 
+     6                                 [section .data]
+     7 00000000 256400                  ftm1 db "%d", 0
+     8 00000003 25730A00                ftm2 db "%s", 10, 0
+     9 00000007 74696C616E6700          satu db "tilang", 0
+    10 0000000E 736564616E6700          dua db "sedang", 0
+    11 00000015 6C616D62617400          tiga db "lambat", 0
+    12                                 
+    13                                 [section .bss]
+    14 00000000 <gap>                   cepat resd 1
+    15                                 
+    16                                 [section .text]
+    17                                 [global main]
+    18                                 
+    19                                 main :
+    20 00000000 68[00000000]            push cepat
+    21 00000005 68[00000000]            push ftm1
+    22 0000000A E8(F6FFFFFF)            call scanf
+    23 0000000F 83C400                  add esp, 0
+    24                                 
+    25 00000012 A1[00000000]            mov eax, [cepat]
+    26                                 
+    27 00000017 83F83C                  cmp eax, 60
+    28 0000001A 7708                    ja a
+    29                                 
+    30 0000001C 83F81E                  cmp eax, 30
+    31 0000001F 7717                    ja b
+    32                                 
+    33 00000021 83F801                  cmp eax, 1
+    34 00000024 7726                    ja c
+    35                                 
+    36                                 a:
+    37 00000026 68[00000000]            push satu
+    38 0000002B 68[00000000]            push ftm2
+    39 00000030 E8(F6FFFFFF)            call printf
+    40 00000035 83C408                  add esp, 8
+    41                                 
+    42 00000038 EB26                    jmp exit
+    43                                 
+    44                                 b:
+    45 0000003A 68[00000000]            push dua
+    46 0000003F 68[00000000]            push ftm2
+    47 00000044 E8(F6FFFFFF)            call printf
+    48 00000049 83C408                  add esp, 8
+    49                                 
+    50 0000004C EB12                    jmp exit
+    51                                 
+    52                                 c:
+    53 0000004E 68[00000000]            push tiga
+    54 00000053 68[00000000]            push ftm2
+    55 00000058 E8(F6FFFFFF)            call printf
+    56 0000005D 83C408                  add esp, 8
+    57                                 
+    58 00000060 EBFE                    jmp exit
+    59                                 
+    60                                 exit:
+    61 00000062 6A00                    push 0
+    62 00000064 E8(F6FFFFFF)            call fflush
+    63                                 
+    64 00000069 B801000000              mov eax, 1
+    65 0000006E BB00000000              mov ebx, 0
+    66 00000073 CD80                    int 0x80

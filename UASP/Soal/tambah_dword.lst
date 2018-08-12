@@ -1,0 +1,48 @@
+     1                                 %line 1+1 tambah_dword.asm
+     2                                 [extern scanf]
+     3                                 [extern printf]
+     4                                 [extern fflush]
+     5                                 
+     6                                 [section .data]
+     7                                 
+     8 00000000 25640A00                cetak db "%d", 10,0
+     9 00000004 256420256400            fmt db "%d %d",0
+    10                                  dword_size equ 4
+    11                                 
+    12                                 [section .bss]
+    13 00000000 <gap>                   a resd 1
+    14 00000004 <gap>                   b resd 1
+    15                                 
+    16                                 [segment .text]
+    17                                 [global main]
+    18                                 
+    19                                 main:
+    20 00000000 68[00000000]            push a
+    21 00000005 68[00000000]            push b
+    22 0000000A 68[00000000]            push fmt
+    23 0000000F E8(F6FFFFFF)            call scanf
+    24 00000014 83C40C                  add esp,12
+    25                                 
+    26 00000017 FF35[00000000]          push dword [b]
+    27 0000001D FF35[00000000]          push dword [a]
+    28 00000023 E8FDFFFFFF              call tambah
+    29                                 
+    30 00000028 EB07                    jmp exit
+    31                                 
+    32                                 tambah:
+    33 0000002A 55                      push ebp
+    34 0000002B 89E5                    mov ebp,esp
+    35 0000002D 8B450C                  mov eax,[ebp+3*dword_size]
+    36 00000030 034508                  add eax,[ebp+2*dword_size]
+    37                                 
+    38                                 exit:
+    39 00000033 50                      push eax
+    40 00000034 68[00000000]            push cetak
+    41 00000039 E8(F6FFFFFF)            call printf
+    42 0000003E 83C408                  add esp,8
+    43 00000041 6A00                    push 0
+    44 00000043 E8(F6FFFFFF)            call fflush
+    45                                 
+    46 00000048 B801000000              mov eax,1
+    47 0000004D BB00000000              mov ebx,0
+    48 00000052 CD80                    int 0x80

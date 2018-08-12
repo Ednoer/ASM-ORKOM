@@ -1,0 +1,143 @@
+     1                                 %line 1+1 3.asm
+     2                                 
+     3                                 [extern scanf]
+     4                                 [extern printf]
+     5                                 [extern fflush]
+     6                                 
+     7                                 [section .data]
+     8 00000000 256400                  fmt1 db "%d", 0
+     9 00000003 25640A00                fmt2 db "%d", 10, 0
+    10 00000007 110000000E00000018-     array dd 17, 14, 24, 11, 18
+    11 00000007 0000000B0000001200-
+    12 00000007 0000               
+    13 0000001B 15000000060000000D-     dd 21, 6, 13, 19, 25
+    14 0000001B 000000130000001900-
+    15 0000001B 0000               
+    16 0000002F 0A0000001600000014-     dd 10, 22, 20, 12, 7
+    17 0000002F 0000000C0000000700-
+    18 0000002F 0000               
+    19 00000043 030000000F00000017-     dd 3, 15, 23, 5, 1
+    20 00000043 000000050000000100-
+    21 00000043 0000               
+    22 00000057 080000000400000009-     dd 8, 4, 9, 16, 2
+    23 00000057 000000100000000200-
+    24 00000057 0000               
+    25                                 
+    26                                 [section .bss]
+    27 00000000 <gap>                   a resd 1
+    28                                 
+    29                                 [section .text]
+    30                                 [global main]
+    31                                 
+    32                                 main:
+    33 00000000 68[00000000]            push a
+    34 00000005 68[00000000]            push fmt1
+    35 0000000A E8(F6FFFFFF)            call scanf
+    36 0000000F 83C408                  add esp, 8
+    37                                 
+    38 00000012 A1[00000000]            mov eax, [a]
+    39 00000017 BB14000000              mov ebx, 20
+    40 0000001C F7E3                    mul ebx
+    41                                 
+    42 0000001E 83F800                  cmp eax, 0
+    43 00000021 0F8482000000            je nol
+    44                                 
+    45                                 
+    46                                 benar:
+    47 00000027 89D6                    mov esi, edx
+    48 00000029 EB22                    jmp looping1
+    49                                 
+    50                                 benar1:
+    51 0000002B 89D6                    mov esi, edx
+    52 0000002D EB2E                    jmp looping2
+    53                                 
+    54                                 benar2:
+    55 0000002F 89D6                    mov esi, edx
+    56 00000031 EB3A                    jmp looping3
+    57                                 
+    58                                 benar3:
+    59 00000033 89D6                    mov esi, edx
+    60 00000035 EB46                    jmp looping4
+    61                                 
+    62                                 benar4:
+    63 00000037 89D6                    mov esi, edx
+    64 00000039 EB52                    jmp looping5
+    65                                 
+    66                                 benar5:
+    67 0000003B 89D6                    mov esi, edx
+    68 0000003D EB5E                    jmp print
+    69                                 
+    70                                 
+    71                                 looping:
+    72 0000003F 8B90[00000000]          mov edx, dword[array+eax]
+    73 00000045 83C004                  add eax, 4
+    74 00000048 41                      inc ecx
+    75 00000049 39DA                    cmp edx, ebx
+    76 0000004B 89D3                    mov ebx, edx
+    77 0000004D 73D6                    jae benar
+    78                                 
+    79                                 looping1:
+    80 0000004F 8B90[00000000]          mov edx, dword[array+eax]
+    81 00000055 83C004                  add eax, 4
+    82 00000058 41                      inc ecx
+    83 00000059 39DA                    cmp edx, ebx
+    84 0000005B 89D3                    mov ebx, edx
+    85 0000005D 73CA                    jae benar1
+    86                                 
+    87                                 looping2:
+    88 0000005F 8B90[00000000]          mov edx, dword[array+eax]
+    89 00000065 83C004                  add eax, 4
+    90 00000068 41                      inc ecx
+    91 00000069 39DA                    cmp edx, ebx
+    92 0000006B 89D3                    mov ebx, edx
+    93 0000006D 73BE                    jae benar2
+    94                                 
+    95                                 looping3:
+    96 0000006F 8B90[00000000]          mov edx, dword[array+eax]
+    97 00000075 83C004                  add eax, 4
+    98 00000078 41                      inc ecx
+    99 00000079 39DA                    cmp edx, ebx
+   100 0000007B 89D3                    mov ebx, edx
+   101 0000007D 73B2                    jae benar3
+   102                                 
+   103                                 looping4:
+   104 0000007F 8B90[00000000]          mov edx, dword[array+eax]
+   105 00000085 83C004                  add eax, 4
+   106 00000088 41                      inc ecx
+   107 00000089 39DA                    cmp edx, ebx
+   108 0000008B 89D3                    mov ebx, edx
+   109 0000008D 73A6                    jae benar4
+   110                                 
+   111                                 looping5:
+   112 0000008F 8B90[00000000]          mov edx, dword[array+eax]
+   113 00000095 83C004                  add eax, 4
+   114 00000098 41                      inc ecx
+   115 00000099 39DA                    cmp edx, ebx
+   116 0000009B 89D3                    mov ebx, edx
+   117 0000009D 739A                    jae benar5
+   118                                 
+   119                                 print:
+   120 0000009F 56                      push esi
+   121 000000A0 68[00000000]            push fmt2
+   122 000000A5 E8(F6FFFFFF)            call printf
+   123 000000AA 83C408                  add esp, 8
+   124                                 
+   125 000000AD EB13                    jmp exit
+   126                                 
+   127                                 nol:
+   128 000000AF B818000000              mov eax,24
+   129 000000B4 50                      push eax
+   130 000000B5 68[00000000]            push fmt2
+   131 000000BA E8(F6FFFFFF)            call printf
+   132 000000BF 83C408                  add esp, 8
+   133                                 
+   134 000000C2 EBFE                    jmp exit
+   135                                 
+   136                                 
+   137                                 
+   138                                 exit:
+   139 000000C4 6A00                    push 0
+   140 000000C6 E8(F6FFFFFF)            call fflush
+   141 000000CB B801000000              mov eax, 1
+   142 000000D0 BB00000000              mov ebx, 0
+   143 000000D5 CD80                    int 0x80

@@ -1,0 +1,61 @@
+     1                                 %line 1+1 jarak_euclid.asm
+     2                                 [extern printf]
+     3                                 [extern fflush]
+     4                                 [extern scanf]
+     5                                 
+     6                                 [section .data]
+     7 00000000 256620256600            scan db "%f %f", 0
+     8 00000006 252E36660A00            print db "%.6f", 10, 0
+     9                                 
+    10                                 
+    11                                 [section .bss]
+    12 00000000 <gap>                   a resd 1
+    13 00000004 <gap>                   b resd 1
+    14 00000008 <gap>                   c resd 1
+    15 0000000C <gap>                   d resd 1
+    16 00000010 <gap>                   e resd 1
+    17 00000014 <gap>                   hasil resd 1
+    18                                 
+    19                                 [section .text]
+    20                                 [global main]
+    21                                 
+    22                                 main:
+    23 00000000 68[00000000]            push b
+    24 00000005 68[00000000]            push a
+    25 0000000A 68[00000000]            push scan
+    26 0000000F E8(F6FFFFFF)            call scanf
+    27 00000014 83C408                  add esp, 8
+    28                                 
+    29 00000017 D905[00000000]          fld dword [a]
+    30 0000001D D905[00000000]          fld dword [a]
+    31 00000023 DEC9                    fmulp
+    32 00000025 D91D[00000000]          fstp dword [c]
+    33                                 
+    34 0000002B D905[00000000]          fld dword [b]
+    35 00000031 D905[00000000]          fld dword [b]
+    36 00000037 DEC9                    fmulp
+    37 00000039 D91D[00000000]          fstp dword [d]
+    38                                 
+    39 0000003F D905[00000000]          fld dword [c]
+    40 00000045 D905[00000000]          fld dword [d]
+    41 0000004B DEC1                    faddp
+    42 0000004D D91D[00000000]          fstp dword [e]
+    43                                 
+    44 00000053 D905[00000000]          fld dword [e]
+    45 00000059 D9FA                    fsqrt
+    46 0000005B DD1D[00000000]          fstp qword [hasil]
+    47                                 
+    48 00000061 FF35[04000000]          push dword[hasil+4]
+    49 00000067 FF35[00000000]          push dword[hasil]
+    50 0000006D 68[00000000]            push print
+    51 00000072 E8(F6FFFFFF)            call printf
+    52 00000077 83C408                  add esp, 8
+    53                                 
+    54                                 exit:
+    55                                 
+    56 0000007A 6A00                    push 0
+    57 0000007C E8(F6FFFFFF)            call fflush
+    58                                 
+    59 00000081 B801000000              mov eax, 1
+    60 00000086 BB00000000              mov ebx, 0
+    61 0000008B CD80                    int 0x80

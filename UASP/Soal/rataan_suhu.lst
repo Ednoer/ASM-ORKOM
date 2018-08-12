@@ -1,0 +1,55 @@
+     1                                 %line 1+1 rataan_suhu.asm
+     2                                 [extern scanf]
+     3                                 [extern printf]
+     4                                 [extern fflush]
+     5                                 
+     6                                 [section .data]
+     7 00000000 256600                  scan db "%f", 0
+     8 00000003 256400                  scand db "%d", 0
+     9 00000006 252E31660A00            print db "%.1f", 10, 0
+    10                                 
+    11                                 [section .bss]
+    12 00000000 <gap>                   n resd 1
+    13 00000004 <gap>                   suhu resd 1
+    14 00000008 0000000000000000        z dq 0
+    15                                 
+    16                                 [section .text]
+    17                                 [global main]
+    18                                 
+    19                                 main:
+    20 00000000 68[00000000]            push n
+    21 00000005 68[00000000]            push scand
+    22 0000000A E8(F6FFFFFF)            call scanf
+    23 0000000F 83C408                  add esp, 8
+    24                                 
+    25 00000012 8B35[00000000]          mov esi, [n]
+    26 00000018 DD05[00000000]          fld qword [z]
+    27                                 
+    28                                 LP:
+    29 0000001E 68[00000000]            push suhu
+    30 00000023 68[00000000]            push scand
+    31 00000028 E8(F6FFFFFF)            call scanf
+    32 0000002D 83C408                  add esp, 8
+    33                                 
+    34 00000030 D805[00000000]          fadd dword [suhu]
+    35 00000036 83EE01                  sub esi, 1
+    36                                 
+    37 00000039 83FE00                  cmp esi, 0
+    38 0000003C 75DE                    jne LP
+    39                                 
+    40 0000003E DA35[00000000]          fidiv dword [n]
+    41 00000044 DD15[00000000]          fst qword [z]
+    42                                 
+    43 0000004A FF35[04000000]          push dword [z+4]
+    44 00000050 FF35[00000000]          push dword [z]
+    45 00000056 68[00000000]            push print
+    46 0000005B E8(F6FFFFFF)            call printf
+    47 00000060 83C408                  add esp, 8
+    48                                 
+    49                                 exit:
+    50 00000063 6A00                    push 0
+    51 00000065 E8(F6FFFFFF)            call fflush
+    52                                 
+    53 0000006A B801000000              mov eax, 1
+    54 0000006F BB00000000              mov ebx, 0
+    55 00000074 CD80                    int 0x80

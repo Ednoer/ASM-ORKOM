@@ -1,0 +1,74 @@
+     1                                 %line 1+1 6.asm
+     2                                 [extern scanf]
+     3                                 [extern printf]
+     4                                 [extern fflush]
+     5                                 
+     6                                 [section .data]
+     7 00000000 256420256420256420-     ftm1 db "%d %d %d %d", 0
+     8 00000000 256400             
+     9 0000000C 25730A00                ftm2 db "%s", 10, 0
+    10 00000010 6C756C75730A00          satu db "lulus", 10, 0
+    11 00000017 746964616B0A00          dua db "tidak", 10, 0
+    12                                 
+    13                                 [section .bss]
+    14 00000000 <gap>                   a resd 1
+    15 00000004 <gap>                   b resd 1
+    16 00000008 <gap>                   c resd 1
+    17 0000000C <gap>                   d resd 1
+    18                                 
+    19                                 [section .text]
+    20                                 [global main]
+    21                                 
+    22                                 main:
+    23 00000000 68[00000000]            push a
+    24 00000005 68[00000000]            push b
+    25 0000000A 68[00000000]            push c
+    26 0000000F 68[00000000]            push d
+    27 00000014 68[00000000]            push ftm1
+    28 00000019 E8(F6FFFFFF)            call scanf
+    29 0000001E 83C408                  add esp, 8
+    30                                 
+    31 00000021 A1[00000000]            mov eax, [a]
+    32 00000026 8B1D[00000000]          mov ebx, [b]
+    33 0000002C 01D8                    add eax, ebx
+    34 0000002E 8B0D[00000000]          mov ecx, [c]
+    35 00000034 01C8                    add eax, ecx
+    36 00000036 8B15[00000000]          mov edx, [d]
+    37 0000003C 01D0                    add eax, edx
+    38                                 
+    39 0000003E BA00000000              mov edx, 0
+    40 00000043 89C0                    mov eax, eax
+    41 00000045 B904000000              mov ecx, 4
+    42 0000004A F7F1                    div ecx
+    43                                 
+    44 0000004C 83F828                  cmp eax, 40
+    45 0000004F 7703                    ja lulus
+    46                                 
+    47 00000051 83F800                  cmp eax, 0
+    48 00000054 7712                    ja glulus
+    49                                 
+    50                                 lulus:
+    51 00000056 68[00000000]            push satu
+    52 0000005B 68[00000000]            push ftm2
+    53 00000060 E8(F6FFFFFF)            call printf
+    54 00000065 83C408                  add esp, 8
+    55                                 
+    56 00000068 EB12                    jmp exit
+    57                                 
+    58                                 glulus:
+    59                                 
+    60 0000006A 68[00000000]            push dua
+    61 0000006F 68[00000000]            push ftm2
+    62 00000074 E8(F6FFFFFF)            call printf
+    63 00000079 83C408                  add esp, 8
+    64                                 
+    65 0000007C EBFE                    jmp exit
+    66                                 
+    67                                 exit:
+    68 0000007E 6A00                    push 0
+    69 00000080 E8(F6FFFFFF)            call fflush
+    70                                 
+    71 00000085 B801000000              mov eax, 1
+    72 0000008A BB00000000              mov ebx, 0
+    73 0000008F CD80                    int 0x80
+    74                                 

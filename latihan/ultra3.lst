@@ -1,0 +1,46 @@
+     1                                 %line 1+1 ultra3.asm
+     2                                 [extern scanf]
+     3                                 [extern printf]
+     4                                 [extern fflush]
+     5                                 
+     6                                 [section .data]
+     7 00000000 256400                  ftm1 db "%d", 0
+     8 00000003 25640A00                ftm2 db "%d", 10, 0
+     9                                 
+    10                                 [section .bss]
+    11 00000000 <gap>                   a resd 1
+    12                                 
+    13                                 [section .text]
+    14                                 [global main]
+    15                                 
+    16                                 main:
+    17 00000000 68[00000000]            push a
+    18 00000005 68[00000000]            push ftm1
+    19 0000000A E8(F6FFFFFF)            call scanf
+    20 0000000F 83C408                  add esp, 8
+    21                                 
+    22 00000012 A1[00000000]            mov eax, [a]
+    23 00000017 BB00000000              mov ebx, 0
+    24 0000001C B906000000              mov ecx, 6
+    25                                 
+    26                                 looping:
+    27 00000021 01CB                    add ebx, ecx
+    28 00000023 83C106                  add ecx, 6
+    29                                 
+    30 00000026 39C1                    cmp ecx, eax
+    31 00000028 76F5                    jbe looping
+    32                                 
+    33 0000002A 53                      push ebx
+    34 0000002B 68[00000000]            push ftm2
+    35 00000030 E8(F6FFFFFF)            call printf
+    36 00000035 83C408                  add esp, 8
+    37                                 
+    38 00000038 6A00                    push 0
+    39 0000003A E8(F6FFFFFF)            call fflush
+    40                                 
+    41                                 exit:
+    42 0000003F B801000000              mov eax, 1
+    43 00000044 BB00000000              mov ebx, 0
+    44 00000049 CD80                    int 0x80
+    45                                 
+    46                                 

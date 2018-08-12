@@ -1,0 +1,40 @@
+     1                                 %line 1+1 cek4.asm
+     2                                 [extern scanf]
+     3                                 [extern printf]
+     4                                 [extern fflush]
+     5                                 
+     6                                 [section .data]
+     7 00000000 256420256400            ftm1 db "%d %d", 0
+     8 00000006 25640A00                ftm2 db "%d", 10, 0
+     9                                 
+    10                                 [section .bss]
+    11 00000000 <gap>                   a resd 1
+    12 00000004 <gap>                   b resd 1
+    13                                 
+    14                                 [section .text]
+    15                                 [global main]
+    16                                 
+    17                                 main:
+    18 00000000 68[00000000]            push a
+    19 00000005 68[00000000]            push b
+    20 0000000A 68[00000000]            push ftm1
+    21 0000000F E8(F6FFFFFF)            call scanf
+    22 00000014 83C408                  add esp, 8
+    23                                 
+    24 00000017 A1[00000000]            mov eax, [a]
+    25 0000001C 8B1D[00000000]          mov ebx, [b]
+    26 00000022 01D8                    add eax, ebx
+    27                                 
+    28 00000024 50                      push eax
+    29 00000025 68[00000000]            push ftm2
+    30 0000002A E8(F6FFFFFF)            call printf
+    31 0000002F 83C408                  add esp, 8
+    32                                 
+    33 00000032 6A00                    push 0
+    34 00000034 E8(F6FFFFFF)            call fflush
+    35                                 
+    36                                 exit:
+    37 00000039 B801000000              mov eax, 1
+    38 0000003E BB00000000              mov ebx, 0
+    39 00000043 CD80                    int 0x80
+    40                                 

@@ -1,0 +1,14 @@
+     1                                 %line 1+1 cek.asm
+     2                                 [segment .data]
+     3 00000000 48656C6C6F20783836-    msg db 'Hello x86', 0xa
+     4 00000000 0A                 
+     5                                 len equ $ - msg
+     6                                 
+     7                                 [segment .text]
+     8                                 [global main]
+     9                                 main:
+    10 00000000 B804000000             mov eax,4
+    11 00000005 BB01000000             mov ebx,1
+    12 0000000A B9[00000000]           mov ecx,msg
+    13 0000000F BA0A000000             mov edx,len
+    14 00000014 CD80                   int 0x80

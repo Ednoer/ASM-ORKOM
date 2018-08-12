@@ -1,0 +1,54 @@
+     1                                 %line 1+1 5.asm
+     2                                 [extern scanf]
+     3                                 [extern printf]
+     4                                 [extern fflush]
+     5                                 
+     6                                 [section .data]
+     7 00000000 256420256420256420-     ftm1 db "%d %d %d %d", 0
+     8 00000000 256400             
+     9 0000000C 25640A00                ftm2 db "%d", 10, 0
+    10                                 
+    11                                 [section .bss]
+    12 00000000 <gap>                   a resd 1
+    13 00000004 <gap>                   b resd 1
+    14 00000008 <gap>                   c resd 1
+    15 0000000C <gap>                   d resd 1
+    16                                 
+    17                                 [section .text]
+    18                                 [global main]
+    19                                 
+    20                                 main:
+    21 00000000 68[00000000]            push a
+    22 00000005 68[00000000]            push b
+    23 0000000A 68[00000000]            push c
+    24 0000000F 68[00000000]            push d
+    25 00000014 68[00000000]            push ftm1
+    26 00000019 E8(F6FFFFFF)            call scanf
+    27 0000001E 83C408                  add esp, 8
+    28                                 
+    29 00000021 A1[00000000]            mov eax, [a]
+    30 00000026 8B1D[00000000]          mov ebx, [b]
+    31 0000002C 01D8                    add eax, ebx
+    32 0000002E 8B0D[00000000]          mov ecx, [c]
+    33 00000034 01C8                    add eax, ecx
+    34 00000036 8B15[00000000]          mov edx, [d]
+    35 0000003C 01D0                    add eax, edx
+    36                                 
+    37 0000003E BA00000000              mov edx, 0
+    38 00000043 89C0                    mov eax, eax
+    39 00000045 B904000000              mov ecx, 4
+    40 0000004A F7F1                    div ecx
+    41                                 
+    42 0000004C 50                      push eax
+    43 0000004D 68[00000000]            push ftm2
+    44 00000052 E8(F6FFFFFF)            call printf
+    45 00000057 83C408                  add esp, 8
+    46                                 
+    47 0000005A 6A00                    push 0
+    48 0000005C E8(F6FFFFFF)            call fflush
+    49                                 
+    50                                 exit:
+    51 00000061 B801000000              mov eax, 1
+    52 00000066 BB00000000              mov ebx, 0
+    53 0000006B CD80                    int 0x80
+    54                                 
